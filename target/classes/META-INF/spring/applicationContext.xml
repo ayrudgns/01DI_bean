@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 이 파일이 POJO 클래스를 자바 bean으로 정의하고 있다. -->
+	<!-- BuyController, BuyService, BuyDao : bean(객체) 생성을 위한 설정파일 -->
+	<!-- id는 변수명 역할의 식별자, class는 객체를 생성할 클래스 (패키지명 반드시 표기!!) -->
+
+	
+	<!-- 생성자 인자가 bean인 경우에는 다른 객체를 가져와야 하면 ref, 그냥 값을 가져오면 value -->
+	<!-- constructor-arg의 ref 속성과 의존관계를 주입하는 bean 태그의 id 속성은 일치해야 한다. -->
+	<bean class="day1.review.BuyController" id="controller">
+		<!-- 의존관계 주입(DI) : 생성자에 전달하는 인자, service라는 이름의 bean으로 설정 -->
+		<constructor-arg ref="service"/>
+		<!-- 커스텀 생성자가 정의된 경우에만 가능하다!! -->
+	</bean>
+	
+	<bean class="day1.review.BuyService" id="service">
+		<!-- 의존관계 주입(DI) : 생성자에 전달하는 인자, dao라는 이름의 bean으로 설정 -->
+		<constructor-arg ref="dao"/>
+	</bean>
+	
+	<bean class="day1.review.BuyDao" id="dao">
+		<!-- 생성자의 인자 value 전달 -->
+		<constructor-arg value="마이바티스"/>
+	</bean>
+	
+	<bean class="day1.review.BuyDao" id="dao2">
+		<constructor-arg value="JDBC" />
+	</bean>
+	
+	<!-- 연습 : ProductService와 ProductDao의 bean 설정하기 -->
+	<!-- 기본 생성자와 setter가 동작한다. -->
+<!-- 	<bean class="day1.review.ProductService" id="productService">
+		<constructor-arg ref="productDao" />
+	</bean> -->
+	
+	<bean class="day1.review.ProductService" id="productService">
+		<property name="dao" ref="productDao2" />
+	</bean>
+	
+	<!-- 커스텀 생성자가 없으므로 기본 생성자에 선언된 변수의 name과 value를 설정해준다. -->
+	<!-- 아래의 bean 정의는 커스텀 생성자가 없는 경우 오류가 발생함! -->
+<!-- 	<bean class="day1.review.ProductDao" id="productDao">
+		<property name="cnt" value="7" />
+		<property name="pname" value="smartTV" />
+	</bean> -->
+	
+	<!-- setter를 통해 값이 전달되고, 객체가 생성되는 것 -->
+	<bean class="day1.review.ProductDao" id="productDao2">
+		<property name="cnt" value="17" />
+		<property name="pname" value="스마트TV" />
+	</bean>
+	
+	<!-- 개발자 본인이 직접 설계한 클래스는 좀 더 쉽게 bean으로 설정하기! -->
+	<!-- Annotation을 활용하면 좀 더 쉽게 할 수 있다. -->	 
+	 
+	
+</beans>
